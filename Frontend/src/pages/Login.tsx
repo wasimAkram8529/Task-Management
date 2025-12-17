@@ -6,6 +6,7 @@ import { loginUser } from "../api/auth.api";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export default function Login() {
       setUser(res.data);
       navigate("/", { replace: true });
     } catch (error) {
+      toast.error("Invalid credentials");
       console.error("Login failed", error);
     }
   };
