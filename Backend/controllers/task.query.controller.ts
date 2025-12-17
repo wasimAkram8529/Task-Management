@@ -3,15 +3,13 @@ import { getDashboardData } from "../services/task.query.service";
 import { asyncHandler } from "../utils/asyncHandler";
 
 export const listTasks = asyncHandler(async (req: any, res: any) => {
-  const { status, priority, sortByDueDate } = req.query;
+  const { status, priority, sort } = req.query;
 
   const query: any = {};
   if (status) query.status = status;
   if (priority) query.priority = priority;
 
-  const tasks = await Task.find(query).sort(
-    sortByDueDate ? { dueDate: 1 } : {}
-  );
+  const tasks = await Task.find(query).sort(sort ? { dueDate: 1 } : {});
 
   res.json(tasks);
 });
