@@ -28,7 +28,6 @@ export default function Register() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-        {/* Header Section */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
             Create Account
@@ -39,7 +38,6 @@ export default function Register() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Full Name Input */}
           <div className="space-y-1">
             <label className="text-sm font-semibold text-slate-700 ml-1">
               Full Name
@@ -61,7 +59,6 @@ export default function Register() {
             )}
           </div>
 
-          {/* Email Input */}
           <div className="space-y-1">
             <label className="text-sm font-semibold text-slate-700 ml-1">
               Email Address
@@ -84,7 +81,6 @@ export default function Register() {
             )}
           </div>
 
-          {/* Password Input */}
           <div className="space-y-1">
             <label className="text-sm font-semibold text-slate-700 ml-1">
               Password
@@ -107,7 +103,6 @@ export default function Register() {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             disabled={isSubmitting}
             className="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center mt-2"
@@ -119,7 +114,6 @@ export default function Register() {
             )}
           </button>
 
-          {/* Login Link */}
           <p className="text-sm text-center text-slate-500 pt-4">
             Already have an account?{" "}
             <Link
@@ -132,7 +126,6 @@ export default function Register() {
         </form>
       </div>
 
-      {/* Footer text */}
       <p className="mt-8 text-slate-400 text-xs font-medium uppercase tracking-widest">
         &copy; 2025 Task Manager
       </p>

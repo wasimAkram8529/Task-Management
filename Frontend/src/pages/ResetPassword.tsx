@@ -14,7 +14,6 @@ export default function ResetPassword() {
   const onSubmit = async (data: any) => {
     try {
       await resetPassword(token!, data.password);
-      // Instead of alert, we navigate with a simple message or just go to login
       navigate("/login", {
         state: { message: "Password updated successfully!" },
       });

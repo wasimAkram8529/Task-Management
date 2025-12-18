@@ -7,7 +7,7 @@ export const AppLayout = ({ children }: any) => {
 
   const handleLogout = async () => {
     await logout();
-    window.location.href = "/login";
+    globalThis.location.href = "/login";
   };
 
   return (

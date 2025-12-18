@@ -1,7 +1,6 @@
 import { AlertCircle, Clock, User2, ShieldCheck } from "lucide-react";
 
 export const TaskCard = ({ task, users }: any) => {
-  // Find both users from the list provided via props
   const assignee = users?.find((u: any) => u._id === task.assignedToId);
   const creator = users?.find(
     (u: any) => u._id === (task.creatorId?._id || task.creatorId)
@@ -23,7 +22,6 @@ export const TaskCard = ({ task, users }: any) => {
 
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group flex flex-col h-full">
-      {/* Title and Description */}
       <div className="mb-4">
         <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1">
           {task.title}
@@ -33,9 +31,7 @@ export const TaskCard = ({ task, users }: any) => {
         </p>
       </div>
 
-      {/* Metadata Section - Unified Label/Value rows */}
       <div className="mt-auto pt-4 border-t border-slate-50 space-y-3">
-        {/* Owner (Creator) Row */}
         <div className="flex justify-between items-center text-[11px] font-medium">
           <span className="text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             <ShieldCheck size={12} className="text-slate-300" /> Owner
@@ -45,7 +41,6 @@ export const TaskCard = ({ task, users }: any) => {
           </span>
         </div>
 
-        {/* Assignee Row */}
         <div className="flex justify-between items-center text-[11px] font-medium">
           <span className="text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             <User2 size={12} className="text-slate-300" /> Assignee
@@ -55,7 +50,6 @@ export const TaskCard = ({ task, users }: any) => {
           </span>
         </div>
 
-        {/* Status Row */}
         <div className="flex justify-between items-center text-[11px] font-medium">
           <span className="text-slate-400 uppercase tracking-wider">
             Status
@@ -69,7 +63,6 @@ export const TaskCard = ({ task, users }: any) => {
           </span>
         </div>
 
-        {/* Priority Row */}
         <div className="flex justify-between items-center text-[11px] font-medium">
           <span className="text-slate-400 uppercase tracking-wider flex items-center gap-1">
             <AlertCircle size={12} /> Priority
@@ -83,7 +76,6 @@ export const TaskCard = ({ task, users }: any) => {
           </span>
         </div>
 
-        {/* Due Date Row */}
         {task.dueDate && (
           <div className="flex justify-between items-center text-[11px] font-medium">
             <span className="text-slate-400 uppercase tracking-wider flex items-center gap-1">

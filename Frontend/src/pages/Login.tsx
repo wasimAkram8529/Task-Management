@@ -34,7 +34,7 @@ export default function Login() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const res = await loginUser(data);
-      setUser(res.data);
+      setUser(res.data.user);
       navigate("/", { replace: true });
     } catch (error) {
       toast.error("Invalid credentials");
@@ -45,7 +45,6 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-        {/* Header Section */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
             Welcome Back
@@ -56,7 +55,6 @@ export default function Login() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Email Input */}
           <div className="space-y-1">
             <label className="text-sm font-semibold text-slate-700 ml-1">
               Email Address
@@ -79,7 +77,6 @@ export default function Login() {
             )}
           </div>
 
-          {/* Password Input */}
           <div className="space-y-1">
             <div className="flex justify-between items-center ml-1">
               <label className="text-sm font-semibold text-slate-700">
@@ -110,7 +107,6 @@ export default function Login() {
             )}
           </div>
 
-          {/* Login Button */}
           <button
             disabled={isSubmitting}
             className="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg shadow-slate-200 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2 mt-2"
@@ -122,7 +118,6 @@ export default function Login() {
             )}
           </button>
 
-          {/* Footer Link */}
           <p className="text-sm text-center text-slate-500 pt-4">
             Don’t have an account?{" "}
             <Link
@@ -135,7 +130,6 @@ export default function Login() {
         </form>
       </div>
 
-      {/* Subtle Copyright/Footer text outside card */}
       <p className="mt-8 text-slate-400 text-xs font-medium uppercase tracking-widest">
         &copy; 2025 Task Manager
       </p>

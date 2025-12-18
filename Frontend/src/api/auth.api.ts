@@ -4,8 +4,6 @@ export const registerUser = (data: any) => api.post("/auth/register", data);
 
 export const loginUser = (data: any) => api.post("/auth/login", data);
 
-export const getProfile = () => api.get("/auth/me");
-
 export const getMe = () => api.get("/auth/me");
 
 export const logout = () => api.post("/auth/logout");

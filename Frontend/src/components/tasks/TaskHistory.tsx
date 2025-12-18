@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Clock } from "lucide-react";
 import { fetchTaskLogs } from "../../api/task.api";
-// Nice icon for history
 
 export const TaskHistory = ({ taskId }: { taskId: string }) => {
   const {
@@ -11,7 +10,7 @@ export const TaskHistory = ({ taskId }: { taskId: string }) => {
   } = useQuery({
     queryKey: ["taskLogs", taskId],
     queryFn: () => fetchTaskLogs(taskId),
-    enabled: !!taskId, // Only fetch if taskId exists
+    enabled: !!taskId,
   });
 
   if (isLoading)
@@ -28,8 +27,6 @@ export const TaskHistory = ({ taskId }: { taskId: string }) => {
       </div>
     );
 
-  // console.log(logs);
-
   return (
     <div className="mt-8">
       <div className="flex items-center gap-2 mb-4 text-slate-800">
@@ -42,7 +39,6 @@ export const TaskHistory = ({ taskId }: { taskId: string }) => {
       <div className="relative space-y-6 before:absolute before:inset-0 before:ml-2 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-slate-200 before:via-slate-200 before:to-transparent">
         {logs.map((log: any) => (
           <div key={log._id} className="relative pl-8">
-            {/* Timeline Dot */}
             <span className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-white bg-blue-500 shadow-sm"></span>
 
             <div className="flex flex-col">

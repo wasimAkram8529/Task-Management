@@ -42,7 +42,6 @@ export const TaskSection = ({ title, tasks, variant = "default" }: Props) => {
               key={task._id}
               className={`group bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 relative overflow-hidden`}
             >
-              {/* Priority Indicator Dot */}
               <div
                 className={`absolute top-0 left-0 w-1 h-full ${
                   task.priority === "high"
@@ -62,7 +61,6 @@ export const TaskSection = ({ title, tasks, variant = "default" }: Props) => {
               </p>
 
               <div className="mt-6 pt-4 border-t border-slate-50 space-y-3">
-                {/* Status Row */}
                 <div className="flex justify-between items-center text-[11px] font-medium">
                   <span className="text-slate-400 uppercase tracking-wider">
                     Status
@@ -80,7 +78,6 @@ export const TaskSection = ({ title, tasks, variant = "default" }: Props) => {
                   </span>
                 </div>
 
-                {/* Priority Row */}
                 <div className="flex justify-between items-center text-[11px] font-medium">
                   <span className="text-slate-400 uppercase tracking-wider">
                     Priority
@@ -96,7 +93,6 @@ export const TaskSection = ({ title, tasks, variant = "default" }: Props) => {
                   </span>
                 </div>
 
-                {/* Due Date Row */}
                 <div className="flex justify-between items-center text-[11px] font-medium">
                   <span className="text-slate-400 uppercase tracking-wider">
                     Due Date

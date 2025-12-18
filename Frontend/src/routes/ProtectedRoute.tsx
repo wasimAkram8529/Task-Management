@@ -16,6 +16,5 @@ export const ProtectedRoute = ({ children }: any) => {
     return <Navigate to="/login" replace />;
   }
 
-  // ✅ Use Outlet if no children are passed (standard for nested routes)
   return children ? children : <Outlet />;
 };

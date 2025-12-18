@@ -3,16 +3,8 @@ import toast from "react-hot-toast";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true, // 🔐 HttpOnly cookies
+  withCredentials: true, // HttpOnly cookies
 });
-
-// api.interceptors.response.use(
-//   (res) => res,
-//   (error) => {
-//     alert(error.response?.data?.message || "Something went wrong");
-//     return Promise.reject(error);
-//   }
-// );
 
 api.interceptors.response.use(
   (response) => response,

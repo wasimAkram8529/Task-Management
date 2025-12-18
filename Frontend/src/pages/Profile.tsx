@@ -11,8 +11,6 @@ export default function Profile() {
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
-  console.log(user);
-
   const {
     register,
     handleSubmit,
@@ -39,7 +37,6 @@ export default function Profile() {
         <h1 className="text-xl font-semibold text-gray-800">Update Profile</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Email (read-only) */}
           <div>
             <label className="block text-sm text-gray-600 mb-1">Email</label>
             <input
@@ -49,7 +46,6 @@ export default function Profile() {
             />
           </div>
 
-          {/* Name */}
           <div>
             <label className="block text-sm text-gray-600 mb-1">Name</label>
             <input
@@ -58,7 +54,6 @@ export default function Profile() {
             />
           </div>
 
-          {/* Actions */}
           <div className="flex justify-end gap-3 pt-4">
             <button
               type="button"

@@ -6,19 +6,17 @@ import { getUsers } from "../api/user.api";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { Filter, LayoutDashboard, RotateCcw } from "lucide-react"; // Added RotateCcw for Reset
+import { Filter, LayoutDashboard, RotateCcw } from "lucide-react";
 
 export default function TaskList() {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTask, setActiveTask] = useState<any>(null);
 
-  // 1. Temporary states (The current selection in the UI)
   const [tempStatus, setTempStatus] = useState("");
   const [tempPriority, setTempPriority] = useState("");
   const [tempSort, setTempSort] = useState("");
 
-  // 2. Applied states (The values used for the API call)
   const [status, setStatus] = useState("");
   const [priority, setPriority] = useState("");
   const [sort, setSort] = useState("");
@@ -34,14 +32,12 @@ export default function TaskList() {
     queryFn: getUsers,
   });
 
-  // ✅ Trigger: Apply selection to the query
   const handleApplyFilters = () => {
     setStatus(tempStatus);
     setPriority(tempPriority);
     setSort(tempSort);
   };
 
-  // ✅ Trigger: Clear everything and refresh list
   const handleResetFilters = () => {
     setTempStatus("");
     setTempPriority("");
@@ -78,10 +74,8 @@ export default function TaskList() {
   return (
     <div className="min-h-screen bg-slate-50/50">
       <div className="max-w-7xl mx-auto p-6 lg:p-10 space-y-8">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
           <div className="flex items-center gap-4">
-            {/* ✅ BACK TO DASHBOARD BUTTON */}
             <Link
               to="/"
               className="p-2.5 bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all border border-slate-100 group"
@@ -111,10 +105,8 @@ export default function TaskList() {
           </button>
         </div>
 
-        {/* Filter Bar */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:items-end gap-4">
-            {/* Status Select */}
             <div className="flex flex-col gap-1.5 flex-1">
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
                 Status
@@ -132,7 +124,6 @@ export default function TaskList() {
               </select>
             </div>
 
-            {/* Priority Select */}
             <div className="flex flex-col gap-1.5 flex-1">
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
                 Priority
@@ -150,7 +141,6 @@ export default function TaskList() {
               </select>
             </div>
 
-            {/* Sort Select */}
             <div className="flex flex-col gap-1.5 flex-1">
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">
                 Sort By
@@ -165,7 +155,6 @@ export default function TaskList() {
               </select>
             </div>
 
-            {/* BUTTON GROUP */}
             <div className="flex gap-2">
               <button
                 onClick={handleResetFilters}
@@ -186,7 +175,6 @@ export default function TaskList() {
           </div>
         </div>
 
-        {/* Task Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tasks.length > 0 ? (
             tasks.map((task: any) => (
