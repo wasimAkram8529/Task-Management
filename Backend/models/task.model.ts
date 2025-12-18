@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const taskSchema = new Schema(
   {
@@ -15,8 +15,8 @@ const taskSchema = new Schema(
       enum: ["TODO", "IN_PROGRESS", "REVIEW", "COMPLETED"],
       default: "TODO",
     },
-    creatorId: { type: Types.ObjectId, ref: "User", required: true },
-    assignedToId: { type: Types.ObjectId, ref: "User", required: true },
+    creatorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    assignedToId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );
