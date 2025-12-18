@@ -23,7 +23,7 @@ export const useSocket = (userId: string | undefined) => {
       socket.emit("join", userId);
     });
 
-    socket.on("task:updated", (data) => {
+    socket.on("task:updated", () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     });

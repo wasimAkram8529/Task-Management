@@ -24,7 +24,7 @@ export const useTask = (filters: any) => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: any) => updateTask(id, data),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["taskLogs", variables.id] });
       toast.success("Task updated!");

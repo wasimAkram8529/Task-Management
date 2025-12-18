@@ -3,11 +3,7 @@ import { Clock } from "lucide-react";
 import { fetchTaskLogs } from "../../api/task.api";
 
 export const TaskHistory = ({ taskId }: { taskId: string }) => {
-  const {
-    data: logs,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: logs, isLoading } = useQuery({
     queryKey: ["taskLogs", taskId],
     queryFn: () => fetchTaskLogs(taskId),
     enabled: !!taskId,

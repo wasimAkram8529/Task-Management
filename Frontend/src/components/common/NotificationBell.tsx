@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNotifications } from "../../api/notification.api";
 export const NotificationBell = () => {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["notifications"],
     queryFn: getNotifications,
   });
