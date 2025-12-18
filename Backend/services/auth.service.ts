@@ -3,15 +3,16 @@ import { hashPassword, comparePassword } from "../utils/password";
 import { signToken } from "../utils/jwt";
 import { AppError } from "../utils/appError";
 import crypto from "crypto";
-import { sendEmail } from "../utils/sendEmail";
+import { sendResetLinkToEmail } from "../utils/sendEmail";
+import { env } from "../config/env";
 
-interface RegisterInput {
+interface RegisterUserInfo {
   name: string;
   email: string;
   password: string;
 }
 
-export const registerUser = async (data: RegisterInput): Promise<string> => {
+export const registerUser = async (data: RegisterUserInfo): Promise<string> => {
   const existingUser = await User.findOne({ email: data.email });
   if (existingUser) {
     throw new AppError("Email already registered", 400);
@@ -31,14 +32,15 @@ export const registerUser = async (data: RegisterInput): Promise<string> => {
 export const loginUser = async (data: {
   email: string;
   password: string;
-}): Promise<string> => {
+}): Promise<object> => {
   const user = await User.findOne({ email: data.email });
   if (!user) throw new AppError("Invalid credentials", 401);
 
-  const isValid = await comparePassword(data.password, user.passwordHash);
-  if (!isValid) throw new AppError("Invalid credentials", 401);
+  const isValidPass = await comparePassword(data.password, user.passwordHash);
+  if (!isValidPass) throw new AppError("Invalid credentials", 401);
 
-  return signToken({ id: user._id.toString() });
+  const token = signToken({ id: user._id.toString() });
+  return { token, user };
 };
 
 export const forgotPassword = async (email: string) => {
@@ -56,12 +58,12 @@ export const forgotPassword = async (email: string) => {
 
   await user.save();
 
-  const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+  const resetUrl = `${env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-  await sendEmail(
+  await sendResetLinkToEmail(
     user.email,
     "Reset your password",
-    `<p>Click below to reset your password:</p>
+    `<p>Click below link to reset your password:</p>
      <a href="${resetUrl}">${resetUrl}</a>`
   );
 };

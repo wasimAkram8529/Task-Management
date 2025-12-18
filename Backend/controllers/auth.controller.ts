@@ -1,4 +1,3 @@
-import { env } from "../config/env";
 import { registerDto, loginDto } from "../dtos/auth.dto";
 import { User } from "../models/user.model";
 import {
@@ -19,9 +18,18 @@ export const register = asyncHandler(async (req: any, res: any) => {
 
 export const login = asyncHandler(async (req: any, res: any) => {
   const data = loginDto.parse(req.body);
-  const token = await loginUser(data);
+  const userData: any = await loginUser(data);
 
-  res.cookie("token", token, { httpOnly: true }).json({ success: true });
+  const { token, user } = userData;
+
+  res.cookie("token", token, { httpOnly: true }).json({
+    user: {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+    },
+    success: true,
+  });
 });
 
 export const getMe = asyncHandler(async (req: any, res: any) => {
@@ -36,9 +44,12 @@ export const getMe = asyncHandler(async (req: any, res: any) => {
   }
 
   res.json({
-    id: user._id.toString(),
-    name: user.name,
-    email: user.email,
+    user: {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+    },
+    success: true,
   });
 });
 

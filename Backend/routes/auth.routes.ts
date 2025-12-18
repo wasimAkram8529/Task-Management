@@ -8,10 +8,10 @@ import {
   resetPasswordHandler,
 } from "../controllers/auth.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
-import { listUsers } from "../controllers/user.controller";
+import { getUsers } from "../controllers/user.controller";
 
 const router = Router();
-router.get("/", authMiddleware, listUsers);
+router.get("/", authMiddleware, getUsers);
 router.post("/register", register);
 router.post("/login", login);
 router.post("/forgot-password", forgotPasswordHandler);

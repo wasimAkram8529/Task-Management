@@ -1,4 +1,3 @@
-// src/controllers/user.controller.ts
 import { asyncHandler } from "../utils/asyncHandler";
 import { updateProfileDto } from "../dtos/user.dto";
 import { User } from "../models/user.model";
@@ -18,7 +17,7 @@ export const updateProfile = asyncHandler(async (req: any, res: any) => {
   res.json(user);
 });
 
-export const listUsers = asyncHandler(async (req: any, res: any) => {
+export const getUsers = asyncHandler(async (req: any, res: any) => {
   const users = await User.find().select("_id name email");
   res.json(users);
 });

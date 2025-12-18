@@ -10,7 +10,7 @@ export const initSocket = (server: any) => {
       methods: ["GET", "POST"],
       credentials: true,
     },
-    transports: ["websocket", "polling"], // Allow both
+    transports: ["websocket", "polling"],
   });
 
   io.on("connection", (socket: Socket) => {

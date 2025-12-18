@@ -3,6 +3,7 @@ import { Notification } from "../models/notification.model";
 import { emitToUser, broadcast } from "../sockets/socket";
 import { AppError } from "../utils/appError";
 import { TaskLog } from "../models/taskLog.model";
+import { User } from "../models/user.model";
 
 export const createTask = async (data: any, userId: string) => {
   if (data.dueDate < new Date()) {
@@ -37,59 +38,96 @@ export const updateTask = async (
   if (!task) throw new AppError("Task not found", 404);
 
   const isCreator = task.creatorId.toString() === userId;
-  const isAssignee = task.assignedToId.toString() === userId;
+  const isAssignee = task.assignedToId?.toString() === userId;
 
   if (!isCreator && !isAssignee) {
-    throw new AppError("Forbidden", 403);
+    throw new AppError("Forbidden: You are not involved in this task", 403);
   }
 
-  if (!isCreator && data.assignedToId) {
-    throw new AppError("Only creator can reassign task", 403);
-  }
+  const restrictedFields = ["title", "description", "dueDate"];
+  if (!isCreator) {
+    const hasActualRestrictedChange = Object.keys(data).some((field) => {
+      if (!restrictedFields.includes(field as any)) return false;
 
-  if (!isCreator && data.priority) {
-    throw new AppError("Only creator can change priority", 403);
-  }
+      const newValue = data[field];
+      const oldValue = (task as any)[field];
 
+      if (oldValue === undefined || oldValue === null)
+        return newValue !== oldValue;
+
+      if (field === "dueDate" && newValue && oldValue) {
+        return new Date(newValue).getTime() !== new Date(oldValue).getTime();
+      }
+
+      return newValue !== oldValue;
+    });
+
+    if (hasActualRestrictedChange) {
+      throw new AppError(
+        "Only the creator can modify core task details (Title, Description, or Due Date)",
+        403
+      );
+    }
+  }
   const oldStatus = task.status;
-  const oldAssignee = task.assignedToId?.toString();
+  const oldPriority = task.priority;
+  const oldAssigneeId = task.assignedToId?.toString();
 
-  // Detect if status is changing
   if (data.status && data.status !== oldStatus) {
     await TaskLog.create({
       taskId: task._id,
       userId,
-      userName, // Ensure this is passed from the controller
-      oldStatus,
-      newStatus: data.status,
+      userName,
+      oldStatus: `Status: ${oldStatus}`,
+      newStatus: `Status: ${data.status}`,
     });
   }
 
-  // Detect if assignee is changing (Optional: Log this too!)
-  if (data.assignedToId && data.assignedToId !== oldAssignee) {
+  if (data.priority && data.priority !== oldPriority) {
     await TaskLog.create({
       taskId: task._id,
       userId,
       userName,
-      oldStatus: `Assigned to ${oldAssignee}`,
-      newStatus: `Assigned to ${data.assignedToId}`,
+      oldStatus: `Priority: ${oldPriority}`,
+      newStatus: `Priority: ${data.priority}`,
+    });
+  }
+
+  if (
+    data.assignedToId !== undefined &&
+    data.assignedToId?.toString() !== oldAssigneeId
+  ) {
+    const [oldUser, newUser] = await Promise.all([
+      oldAssigneeId ? User.findById(oldAssigneeId) : Promise.resolve(null),
+      data.assignedToId
+        ? User.findById(data.assignedToId)
+        : Promise.resolve(null),
+    ]);
+
+    const oldName = oldUser ? oldUser.name : "Unassigned";
+    const newName = newUser ? newUser.name : "Unassigned";
+
+    await TaskLog.create({
+      taskId: task._id,
+      userId,
+      userName,
+      oldStatus: `Assigned to: ${oldName}`,
+      newStatus: `Assigned to: ${newName}`,
     });
   }
 
   Object.assign(task, data);
   await task.save();
 
-  // Assignment Notification
-  if (data.assignedToId && data.assignedToId !== oldAssignee) {
+  if (data.assignedToId && data.assignedToId.toString() !== oldAssigneeId) {
     const notification = await Notification.create({
       userId: data.assignedToId,
-      message: `You have been assigned a new task: ${task.title}`,
+      message: `You have been assigned to: ${task.title}`,
     });
-
     emitToUser(data.assignedToId, "notification:new", notification);
-    // Real time update for all users
-    broadcast("task:updated", task);
   }
+
+  broadcast("task:updated", task);
 
   return task;
 };
@@ -105,34 +143,3 @@ export const deleteTask = async (taskId: string, userId: string) => {
   await task.deleteOne();
   broadcast("task:updated", { _id: taskId, deleted: true });
 };
-
-// export const updateTaskStatus = async (
-//   taskId: string,
-//   userId: string,
-//   newStatus: string,
-//   userName: string
-// ) => {
-//   type TaskStatus = "TODO" | "IN_PROGRESS" | "REVIEW" | "COMPLETED";
-
-//   const task = await Task.findById(taskId);
-//   if (!task) throw new AppError("Task not found", 404);
-
-//   const oldStatus = task.status;
-
-//   if (oldStatus !== newStatus) {
-//     task.status = newStatus as TaskStatus;
-//     await task.save();
-
-//     await TaskLog.create({
-//       taskId,
-//       userId,
-//       userName,
-//       oldStatus,
-//       newStatus,
-//     });
-
-//     broadcast("task:updated", { taskId, newStatus, updatedBy: userName });
-//   }
-
-//   return task;
-// };

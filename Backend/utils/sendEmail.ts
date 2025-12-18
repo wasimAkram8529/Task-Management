@@ -1,8 +1,12 @@
 import nodemailer from "nodemailer";
 import { env } from "../config/env";
 
-export const sendEmail = async (to: string, subject: string, html: string) => {
-  const transporter = nodemailer.createTransport({
+export const sendResetLinkToEmail = async (
+  to: string,
+  subject: string,
+  html: string
+) => {
+  const emailTransporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       user: env.EMAIL_USER,
@@ -10,7 +14,7 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
     },
   });
 
-  await transporter.sendMail({
+  await emailTransporter.sendMail({
     from: `"Task Manager" <${process.env.EMAIL_USER}>`,
     to,
     subject,
