@@ -64,7 +64,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between md:block">
               <div>
                 <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-                  Project Hub
+                  Task Management System
                 </h1>
                 <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">
                   Welcome, <span className="text-blue-600">{user?.name}</span>
