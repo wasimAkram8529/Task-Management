@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/v1`,
   withCredentials: true, // HttpOnly cookies
 });
 
