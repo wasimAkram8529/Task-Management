@@ -6,8 +6,16 @@ import { TaskLog } from "../models/taskLog.model";
 import { User } from "../models/user.model";
 
 export const createTask = async (data: any, userId: string) => {
-  if (data.dueDate < new Date()) {
-    throw new AppError("Due date cannot be in the past", 400);
+  if (data.dueDate) {
+    const selectedDate = new Date(data.dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+    console.log(today, selectedDate);
+
+    if (selectedDate < today) {
+      throw new AppError("Due date cannot be in the past", 400);
+    }
   }
 
   const task: any = await Task.create({
@@ -38,11 +46,11 @@ export const updateTask = async (
   if (!task) throw new AppError("Task not found", 404);
 
   const isCreator = task.creatorId.toString() === userId;
-  const isAssignee = task.assignedToId?.toString() === userId;
+  // const isAssignee = task.assignedToId?.toString() === userId;
 
-  if (!isCreator && !isAssignee) {
-    throw new AppError("Forbidden: You are not involved in this task", 403);
-  }
+  // if (!isCreator && !isAssignee) {
+  //   throw new AppError("Forbidden: You are not involved in this task", 403);
+  // }
 
   const restrictedFields = ["title", "description", "dueDate"];
   if (!isCreator) {
@@ -72,6 +80,17 @@ export const updateTask = async (
   const oldStatus = task.status;
   const oldPriority = task.priority;
   const oldAssigneeId = task.assignedToId?.toString();
+
+  if (data.dueDate) {
+    const selectedDate = new Date(data.dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    if (selectedDate < today) {
+      throw new AppError("Due date cannot be in the past", 400);
+    }
+  }
 
   if (data.status && data.status !== oldStatus) {
     await TaskLog.create({
