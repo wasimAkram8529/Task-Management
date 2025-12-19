@@ -1,4 +1,4 @@
-## Real-Time Task Management System
+## Real Time Task Management System
 
 A full stack project management application featuring authentication, role based access, real time collaboration and notifications, a clean dashboard experience, task tracking, and workspace management.
 Built using MERN stack + TypeScript, with Socket.io for real time updates and React Query for state management.
@@ -232,9 +232,8 @@ EMAIL_PASS=<Google app password>
 ### Frontend Setup
 
 ```bash
-cd frontend
+cd Frontend
 npm install
-npm run dev
 ```
 
 - Create a .env file
@@ -285,9 +284,9 @@ DELETE,    /api/v1/tasks/:id,          Remove a task
 ### Notification
 
 ```table
-Method,     Endpoint,                   Description
-GET,        /api/v1/notifications,      Get latest 20 notifications
-PATCH,      /api/v1/notifications/read, Mark all unread as read
+Method,     Endpoint,                     Description
+GET,        /api/v1/notifications,        Get latest 20 notifications
+PATCH,      /api/v1/notifications/read,   Mark all unread as read
 ```
 
 ### User
@@ -343,7 +342,7 @@ PATCH,      /api/v1/user/me,            Update user info
 - Run entire stack:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
 - Services:
