@@ -1,3 +1,4 @@
+import { env } from "../config/env";
 import { registerDto, loginDto } from "../dtos/auth.dto";
 import { User } from "../models/user.model";
 import {
@@ -13,7 +14,14 @@ export const register = asyncHandler(async (req: any, res: any) => {
   const data = registerDto.parse(req.body);
   const token = await registerUser(data);
 
-  res.cookie("token", token, { httpOnly: true }).json({ success: true });
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+    .json({ success: true });
 });
 
 export const login = asyncHandler(async (req: any, res: any) => {
@@ -22,14 +30,21 @@ export const login = asyncHandler(async (req: any, res: any) => {
 
   const { token, user } = userData;
 
-  res.cookie("token", token, { httpOnly: true }).json({
-    user: {
-      id: user._id.toString(),
-      name: user.name,
-      email: user.email,
-    },
-    success: true,
-  });
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+    .json({
+      user: {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+      },
+      success: true,
+    });
 });
 
 export const getMe = asyncHandler(async (req: any, res: any) => {
@@ -56,7 +71,8 @@ export const getMe = asyncHandler(async (req: any, res: any) => {
 export const logout = asyncHandler(async (req: any, res: any) => {
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: "lax",
+    secure: env.NODE_ENV === "production",
+    sameSite: env.NODE_ENV === "production" ? "none" : "lax",
   });
 
   res.json({ success: true });

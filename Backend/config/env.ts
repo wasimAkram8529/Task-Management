@@ -7,4 +7,5 @@ export const env = {
   FRONTEND_URL: process.env.FRONTEND_URL,
   EMAIL_USER: process.env.EMAIL_USER,
   EMAIL_PASS: process.env.EMAIL_PASS,
+  NODE_ENV: process.env.NODE_ENV,
 };
