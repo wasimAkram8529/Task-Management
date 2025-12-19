@@ -82,10 +82,39 @@ export default function Dashboard() {
                     <Bell className="w-6 h-6" />
                   )}
                 </button>
-                <button
-                  onClick={handleLogout}
-                  className="text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-lg"
-                >
+
+                {showNotifications && (
+                  <div className="absolute left-4 right-4 top-20 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 md:hidden">
+                    <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                      <h3 className="font-bold text-slate-800 text-sm">
+                        Notifications
+                      </h3>
+                      <span className="text-[10px] font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full uppercase">
+                        {unreadCount} New
+                      </span>
+                    </div>
+                    <div className="max-h-[300px] overflow-y-auto">
+                      {notifications.length > 0 ? (
+                        notifications.map((n: any) => (
+                          <div
+                            key={n._id}
+                            className="p-4 border-b border-slate-50"
+                          >
+                            <p className="text-sm text-slate-700">
+                              {n.message}
+                            </p>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-8 text-center text-slate-400 text-sm">
+                          No notifications yet
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <button onClick={handleLogout} className="...">
                   Logout
                 </button>
               </div>
