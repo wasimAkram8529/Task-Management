@@ -8,6 +8,7 @@ import { getNotifications, readNotifications } from "../api/notification.api";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Bell, BellDot } from "lucide-react";
+import LoadingScreen from "../components/common/LoadingScreen";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const { user, setUser } = useAuth();
   const { data, isLoading } = useDashboard();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showWakeUpMessage, setShowWakeUpMessage] = useState(false);
 
   const { data: notificationsData } = useQuery({
     queryKey: ["notifications"],
@@ -29,6 +31,17 @@ export default function Dashboard() {
       });
     }
   }, [showNotifications]);
+
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShowWakeUpMessage(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowWakeUpMessage(false);
+    }
+  }, [isLoading]);
+
+  if (showWakeUpMessage) return <LoadingScreen />;
 
   if (isLoading || !data) {
     return (
